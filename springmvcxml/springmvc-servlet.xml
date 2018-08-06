@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+	
+	<!-- 1、配置urlHandlerMapping 默认BeanNameURLHandlerMapping，无需配置 -->
+	<bean id="beanNameUrlHandlerMapping" 
+			class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<!-- 设置优先级，值越小优先级越高 -->
+		<property name="order" value="1"/>		
+	</bean>
+			
+	<bean id="simpleUrlHandlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/hi.action">hContoller</prop>
+				<prop key="/a.action">hContoller</prop>
+				<prop key="/b.action">hContoller</prop>
+				<prop key="/c.action">hContoller</prop>
+			</props>
+		</property>
+		<property name="order" value="0"/>
+	</bean>
+	
+	<bean id="controllerClassNameHandlerMapping" class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping">
+		<property name="order" value="2"/>
+	</bean>
+	
+	<!-- 2、xml声明方式 Controller -->
+	<bean name="/hi.action" class="cn.crxy.smvc.HomeController"/>
+	<bean id="hContoller" class="cn.crxy.smvc.HiController"/>
+	<bean class="cn.crxy.smvc.MyCommandController"/>
+	<bean class="cn.crxy.smvc.MyFormController">
+		<property name="formView" value="PersonForm"/>		<!-- 页面视图 -->
+		<property name="successView" value="index"/>		<!-- 成功视图 -->
+	</bean>
+	
+	<!-- 3、视图解析器jsp 内部资源视图解析器 /WEB-INF/pages/index.jsp -->
+	<!-- 前缀+逻辑名+后缀 -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>			
+</beans>						
